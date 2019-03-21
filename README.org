@@ -1,0 +1,44 @@
+Redis list piplining demostration for push throughoutput to limits.
+
+#+NAME:
+#+BEGIN_SRC shell
+$ make
+$ target/redis-list-bench -help
+
+Usage of ./target/redis-bench:
+  -consumer
+    	act as consumer
+  -db int
+    	redis db
+  -key string
+    	key name (default "mylist")
+  -msgsize int
+    	data size (default 3)
+  -password string
+    	redis auth password
+  -pipe int
+    	pipe size (default 1)
+  -producer
+    	act as producer
+  -redis string
+    	redis server address (default "127.0.0.1:6379")
+  -worker int
+    	worker connection & threads (default 1)
+#+END_SRC
+
+
+Some brief data on i7 4770 @3.4Ghz , loopback network, with a 4-connection 50 pipelining consumer.
+
+Lookback traffic about 1.4Gbps ~ max.
+
+| client | pipeline | datasize | qps  |
+|--------+----------+----------+------|
+|      1 |        1 | 250bytes | 11k  |
+|      1 |       10 | 250bytes | 51k  |
+|      1 |       50 | 250bytes | 130k |
+|      1 |      100 | 250bytes | 220k |
+|      1 |      200 | 250bytes | 220k |
+|      2 |      100 | 250bytes | 275k |
+|      4 |      100 | 250bytes | 340k |
+|      8 |      100 | 250bytes | 410k |
+|     16 |      100 | 250bytes | 480k |
